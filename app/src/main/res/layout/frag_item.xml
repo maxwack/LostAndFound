@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                                    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <ImageView
+                android:layout_width="200dp"
+                android:layout_height="78dp" android:id="@+id/img_item"
+                android:layout_weight="1" android:contentDescription="@string/image_desc"
+                app:srcCompat="@drawable/unknown"/>
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" android:layout_weight="1">
+            <TextView
+                    android:text="Wallet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/itemName"
+            />
+            <TextView
+                    android:text="2019/08/14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/item_reg_date"
+                    android:layout_toRightOf="@id/itemName" android:textAlignment="textEnd"
+                    android:layout_alignParentEnd="true"/>
+            <TextView
+                    android:text="@string/at"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/string_at"
+                    android:layout_below="@id/itemName"/>
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/item_place"
+                    android:layout_below="@id/itemName" android:layout_toRightOf="@id/string_at"/>
+            <TextView
+                    android:text="@string/shortDesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/string_shortDesc"
+                    android:layout_below="@id/string_at"/>
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>
