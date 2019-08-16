@@ -29,31 +29,31 @@
             android:layout_below="@id/item_reg_date" android:layout_toRightOf="@id/icon_Profile"
             android:layout_alignBottom="@id/icon_Profile"/>
     <TextView
+            android:text="@string/reward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/string_reward" android:layout_below="@id/item_Img"/>
+    <CheckBox
+            android:text="Included"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/item_reward" android:layout_below="@id/item_Img"
+            android:layout_toRightOf="@id/string_reward" android:checked="true"/>
+    <TextView
             android:text="@string/foundAt"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/string_foundat" android:layout_below="@id/item_Img"/>
+            android:layout_height="wrap_content" android:id="@+id/string_foundat" android:layout_below="@id/item_reward"/>
     <TextView
             android:text="Ueno"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/item_place1"
-            android:layout_toRightOf="@id/string_foundat" android:layout_below="@id/item_Img"/>
+            android:layout_height="wrap_content" android:id="@+id/item_place"
+            android:layout_toRightOf="@id/string_foundat" android:layout_below="@id/item_reward"/>
     <TextView
             android:text="izakaya"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/item_place2" android:layout_below="@id/item_place1"
+            android:layout_height="wrap_content" android:id="@+id/item_place2" android:layout_below="@id/item_place"
             android:layout_toRightOf="@id/string_foundat"/>
     <TextView
             android:text="park"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/item_place3"
             android:layout_toRightOf="@id/string_foundat" android:layout_below="@id/item_place2"/>
-    <TextView
-            android:text="@string/reward"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/string_reward" android:layout_below="@id/item_place3"/>
-    <CheckBox
-            android:text="Included"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/item_reward" android:layout_below="@id/item_place3"
-            android:layout_toRightOf="@id/string_reward" android:checked="true"/>
 </RelativeLayout>

@@ -17,5 +17,7 @@
     <string name="at">at: </string>
     <string name="shortDesc">short description: </string>
     <string name="foundAt">found near: </string>
+    <string name="lostAt">lost near: </string>
     <string name="reward">reward: </string>
+    <string name="comment">comment: </string>
 </resources>

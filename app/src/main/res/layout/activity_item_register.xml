@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+                android:layout_height="match_parent" android:id="@+id/rootLayout">
+
+    <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp" app:srcCompat="@drawable/unknown" android:id="@+id/item_Img"
+            android:contentDescription="@string/image_desc"/>
+    <TextView
+            android:text="object :"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/string_title"
+            android:layout_toEndOf="@id/item_Img"/>
+    <TextView
+            android:text="2019/08/14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/string_date" android:layout_below="@id/string_title"
+            android:layout_toEndOf="@id/item_Img"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:srcCompat="@android:drawable/ic_menu_myplaces"
+            android:id="@+id/icon_Profile" android:layout_below="@id/string_date"
+            android:layout_toEndOf="@id/item_Img" android:contentDescription="icon for user"/>
+    <TextView
+            android:text="Sophie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/item_reg_user"
+            android:layout_below="@id/string_date"
+            android:layout_alignBottom="@id/icon_Profile" android:layout_toEndOf="@id/icon_Profile"/>
+
+    <TextView
+            android:text="@string/reward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/string_reward" android:layout_below="@id/item_Img"
+            android:layout_alignBottom="@id/item_reward" android:gravity="center"/>
+    <CheckBox
+            android:text="Included"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/item_reward" android:layout_below="@id/item_Img"
+            android:checked="true"
+            android:layout_toEndOf="@id/string_reward"/>
+
+    <TextView
+            android:text="@string/lostAt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/string_foundat"
+            android:layout_below="@id/item_reward" android:layout_alignBottom="@id/item_place"
+            android:gravity="center"/>
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/item_place" android:layout_below="@id/item_reward"
+            android:singleLine="true"
+            android:layout_toEndOf="@id/string_foundat" android:inputType="textShortMessage"/>
+    <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true" app:srcCompat="@android:drawable/ic_menu_add"
+            android:id="@+id/button_add_place"
+            android:layout_below="@id/item_reward" android:layout_toEndOf="@id/item_place"
+            android:onClick="addOnClick"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/string_added_place"
+            android:layout_below="@id/item_place" android:layout_toEndOf="@id/string_foundat"
+            android:layout_alignEnd="@id/item_place"/>
+    <TextView
+            android:text="@string/comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/string_comment"
+            android:layout_below="@id/string_added_place" android:layout_alignBottom="@id/item_comment"
+            android:gravity="center"/>
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:gravity="start|top"
+            android:ems="10"
+            android:id="@+id/item_comment" android:layout_below="@id/string_added_place"
+            android:layout_toEndOf="@id/string_comment" android:layout_alignParentEnd="true"/>
+    <Button
+            android:text="Register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/button_register"
+            android:layout_below="@id/item_comment"
+            android:layout_alignParentEnd="true" android:onClick="registerOnClick"/>
+</RelativeLayout>
