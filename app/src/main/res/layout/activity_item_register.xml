@@ -55,7 +55,8 @@
             android:id="@+id/item_place" android:layout_below="@id/item_reward"
             android:singleLine="true"
             android:layout_toEndOf="@id/string_foundat" android:inputType="textShortMessage"/>
-    <android.support.design.widget.FloatingActionButton
+    <Button
+            android:text="Locate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true" app:srcCompat="@android:drawable/ic_menu_add"
@@ -68,10 +69,16 @@
             android:layout_below="@id/item_place" android:layout_toEndOf="@id/string_foundat"
             android:layout_alignEnd="@id/item_place"/>
     <TextView
+            android:text="@string/category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/string_category"
+            android:layout_below="@id/string_added_place" android:layout_alignBottom="@id/button_select"
+            android:gravity="center"/>
+    <TextView
             android:text="@string/comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/string_comment"
-            android:layout_below="@id/string_added_place" android:layout_alignBottom="@id/item_comment"
+            android:layout_below="@id/string_category" android:layout_alignBottom="@id/item_comment"
             android:gravity="center"/>
     <EditText
             android:layout_width="wrap_content"
@@ -79,7 +86,7 @@
             android:inputType="textMultiLine"
             android:gravity="start|top"
             android:ems="10"
-            android:id="@+id/item_comment" android:layout_below="@id/string_added_place"
+            android:id="@+id/item_comment" android:layout_below="@id/string_category"
             android:layout_toEndOf="@id/string_comment" android:layout_alignParentEnd="true"/>
     <Button
             android:text="Register"
@@ -87,4 +94,24 @@
             android:layout_height="wrap_content" android:id="@+id/button_register"
             android:layout_below="@id/item_comment"
             android:layout_alignParentEnd="true" android:onClick="registerOnClick"/>
+    <Button
+            android:text="@string/select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/button_select"
+            android:layout_below="@id/string_added_place" android:layout_toEndOf="@id/string_category"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/string_added_cat"
+            android:layout_below="@id/string_added_place" android:layout_toEndOf="@id/button_select"
+            android:layout_alignBottom="@id/button_select" android:layout_alignParentRight="true"
+            android:gravity="center"/>
+
+    <Button
+            android:id="@+id/button_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/button_register"
+            android:layout_alignParentEnd="false"
+            android:onClick="cancelOnClick"
+            android:text="@android:string/cancel" />
 </RelativeLayout>

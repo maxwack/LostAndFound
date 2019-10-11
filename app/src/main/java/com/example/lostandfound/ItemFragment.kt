@@ -2,10 +2,11 @@ package com.example.lostandfound
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.fragment.app.Fragment
 
 class ItemFragment : Fragment() {
 
@@ -16,7 +17,9 @@ class ItemFragment : Fragment() {
 
         // Set a click listener for button widget
         view.setOnClickListener{
+            val itemName = view.findViewById<TextView>(R.id.itemName)
             val i = Intent(context, ItemDetailsActivity::class.java)
+            i.action = itemName.text.toString()
             startActivity(i)
         }
 

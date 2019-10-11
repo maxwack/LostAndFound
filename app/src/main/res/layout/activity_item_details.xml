@@ -56,4 +56,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/item_place3"
             android:layout_toRightOf="@id/string_foundat" android:layout_below="@id/item_place2"/>
+
+    <Button
+            android:id="@+id/button_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_place3"
+            android:text="Message" />
+
+    <Button
+            android:id="@+id/button_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/button_message"
+            android:onClick="cancelOnClick"
+            android:text="@string/fui_cancel" />
 </RelativeLayout>

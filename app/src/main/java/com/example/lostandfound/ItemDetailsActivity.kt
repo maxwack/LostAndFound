@@ -1,8 +1,9 @@
 package com.example.lostandfound
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 
 class ItemDetailsActivity: AppCompatActivity() {
 
@@ -20,7 +21,12 @@ class ItemDetailsActivity: AppCompatActivity() {
             intArrayOf(android.R.attr.actionBarSize)
         )
         styledAttributes.recycle()
+        supportActionBar!!.title = intent.action  // provide compatibility to all the versions
 
         window.setLayout(mMaxWidth, mMaxHeight)
+    }
+
+    fun cancelOnClick(v: View){
+        finish()
     }
 }

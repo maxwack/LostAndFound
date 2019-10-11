@@ -30,6 +30,10 @@
 
         <activity android:name=".ItemRegisterActivity">
         </activity>
+
+        <activity android:name=".LoginActivity"
+                android:theme="@style/PopUpTheme">
+        </activity>
     </application>
 
 </manifest>
