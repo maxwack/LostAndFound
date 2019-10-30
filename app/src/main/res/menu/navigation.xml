@@ -3,8 +3,8 @@
 
     <item
             android:id="@+id/menu_add"
-            android:icon="@android:drawable/btn_plus"
-            android:title="Add"/>
+            android:icon="@android:drawable/ic_menu_add"
+            android:title="Add" />
 
     <item
             android:id="@+id/menu_search"
@@ -13,7 +13,7 @@
 
     <item
             android:id="@+id/menu_message"
-            android:icon="@android:drawable/ic_menu_send"
+            android:icon="@android:drawable/ic_dialog_email"
             android:title="Message"/>
 
 </menu>

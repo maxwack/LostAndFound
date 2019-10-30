@@ -14,6 +14,11 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
+import android.text.InputType
+import android.util.Log
+import android.widget.EditText
+import androidx.core.content.res.ResourcesCompat
 
 
 class MainActivity : AppCompatActivity(){
@@ -21,7 +26,10 @@ class MainActivity : AppCompatActivity(){
     companion object {
         const val REGISTER_FOUND = "found"
         const val REGISTER_LOST = "lost"
+        const val HISTORIC = "historic"
+        const val SHOW_ALL = "show_all"
         const val RC_SIGN_IN = 200
+        const val RC_LOG_IN = 300
     }
 
     // Choose authentication providers
@@ -34,23 +42,38 @@ class MainActivity : AppCompatActivity(){
 
     private lateinit var auth: FirebaseAuth
 
-    var choice = arrayOf("I found something !", "I lost something !")
-    var choiceUser = arrayOf("Log In", "Register")
-    lateinit var toolbar: ActionBar
+    private val choice = arrayOf("I found something !", "I lost something !")
+    private val choiceUser = arrayOf("Log In", "Register")
+    private lateinit var toolbar: ActionBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        auth = FirebaseAuth.getInstance()
+
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.frag_holder, ItemListFragment())
+        val fragInstance = ItemListFragment()
+        val args = Bundle()
+        args.putString("action", SHOW_ALL)
+        fragInstance.arguments = args
+        transaction.add(R.id.frag_holder, fragInstance,"item_list")
         transaction.commit()
 
         toolbar = supportActionBar!!
+        if(auth.currentUser != null){
+            toolbar.title = auth.currentUser!!.displayName
+        }else{
+            toolbar.title = "Anonymous"
+        }
+
+
+        toolbar.setHomeAsUpIndicator(ResourcesCompat.getDrawable(resources,android.R.drawable.ic_menu_revert,null))
+
         val bottomNavigation: BottomNavigationView = findViewById(R.id.bottom_navigation)
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        auth = FirebaseAuth.getInstance()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -86,7 +109,7 @@ class MainActivity : AppCompatActivity(){
                     builder.setItems(choiceUser) { _, which ->
                         if(which == 0) {
                             val intent = Intent(this,LoginActivity::class.java)
-                            startActivity(intent)
+                            startActivityForResult(intent, RC_LOG_IN)
                         }else{
                             startActivityForResult(
                                 AuthUI.getInstance()
@@ -97,6 +120,15 @@ class MainActivity : AppCompatActivity(){
                         }
                     }
                     builder.show()
+
+//                    firebase.auth.createUserWithEmailAndPassword(email, password)
+//                        .then(function(result) {
+//                            return result.user.updateProfile({
+//                                displayName: document.getElementById("name").value
+//                            })
+//                        }).catch(function(error) {
+//                            console.log(error);
+//                        });`
 //                    val intent = Intent(this, LoginActivity::class.java)
 //                    startActivityForResult(
 //                        intent,
@@ -128,13 +160,23 @@ class MainActivity : AppCompatActivity(){
 
             if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in
-                val user = FirebaseAuth.getInstance().currentUser
+                if(auth.currentUser != null){
+                    toolbar.title = auth.currentUser!!.displayName
+                }else{
+                    toolbar.title = "Anonymous"
+                }
                 // ...
             } else {
                 // Sign in failed. If response is null the user canceled the
                 // sign-in flow using the back button. Otherwise check
                 // response.getError().getErrorCode() and handle the error.
                 // ...
+            }
+        }else if(requestCode == RC_LOG_IN){
+            if(auth.currentUser != null){
+                toolbar.title = auth.currentUser!!.displayName
+            }else{
+                toolbar.title = "Anonymous"
             }
         }
     }
@@ -147,7 +189,39 @@ class MainActivity : AppCompatActivity(){
                 .addOnCompleteListener {
                     Toast.makeText(baseContext, "user logout",
                         Toast.LENGTH_SHORT).show()
+                    if(auth.currentUser != null){
+                        toolbar.title = auth.currentUser!!.displayName
+                    }else{
+                        toolbar.title = "Anonymous"
+                    }
                 }
+            true
+        }
+        R.id.action_historic -> {
+            toolbar.title = "HISTORIC"
+            toolbar.setDisplayHomeAsUpEnabled(true)
+            val transaction = supportFragmentManager.beginTransaction()
+            val frg = supportFragmentManager.findFragmentByTag("item_list")
+            transaction.detach(frg!!)
+            val args = Bundle()
+            args.putString("action", HISTORIC)
+            args.putString("user", auth.currentUser!!.uid)
+            frg.arguments = args
+            transaction.attach(frg)
+            transaction.commit()
+            true
+        }
+        android.R.id.home ->{
+            toolbar.title = auth.currentUser!!.displayName
+            toolbar.setDisplayHomeAsUpEnabled(false)
+            val transaction = supportFragmentManager.beginTransaction()
+            val frg = supportFragmentManager.findFragmentByTag("item_list")
+            transaction.detach(frg!!)
+            val args = Bundle()
+            args.putString("action", SHOW_ALL)
+            frg.arguments = args
+            transaction.attach(frg)
+            transaction.commit()
             true
         }
         else -> {

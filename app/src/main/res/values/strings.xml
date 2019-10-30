@@ -13,6 +13,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="action_historic">Historic</string>
     <string name="action_logout">Logout</string>
 
     <string name="image_desc">Image of the lost item</string>

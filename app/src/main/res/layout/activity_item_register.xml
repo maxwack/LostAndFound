@@ -5,30 +5,43 @@
                 android:layout_height="match_parent" android:id="@+id/rootLayout">
 
     <ImageView
+            android:id="@+id/item_Img"
             android:layout_width="100dp"
-            android:layout_height="100dp" app:srcCompat="@drawable/unknown" android:id="@+id/item_Img"
-            android:contentDescription="@string/image_desc"/>
-    <TextView
-            android:text="object :"
+            android:layout_height="100dp"
+            android:contentDescription="@string/image_desc"
+            android:onClick="imageOnClick"
+            app:srcCompat="@drawable/unknown" />
+
+    <EditText
+            android:id="@+id/item_Name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/string_title"
-            android:layout_toEndOf="@id/item_Img"/>
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/item_Img"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Name" />
+
     <TextView
-            android:text="2019/08/14"
+            android:id="@+id/string_date"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/string_date" android:layout_below="@id/string_title"
-            android:layout_toEndOf="@id/item_Img"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_Name"
+            android:layout_toEndOf="@id/item_Img"
+            android:text="2019/08/14" />
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" app:srcCompat="@android:drawable/ic_menu_myplaces"
             android:id="@+id/icon_Profile" android:layout_below="@id/string_date"
             android:layout_toEndOf="@id/item_Img" android:contentDescription="icon for user"/>
+
     <TextView
-            android:text="Sophie"
+            android:id="@+id/item_reg_user"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/item_reg_user"
+            android:layout_height="wrap_content"
             android:layout_below="@id/string_date"
-            android:layout_alignBottom="@id/icon_Profile" android:layout_toEndOf="@id/icon_Profile"/>
+            android:layout_alignBottom="@id/icon_Profile"
+            android:layout_toEndOf="@id/icon_Profile"
+            android:text="Anonymous" />
 
     <TextView
             android:text="@string/reward"
@@ -55,14 +68,17 @@
             android:id="@+id/item_place" android:layout_below="@id/item_reward"
             android:singleLine="true"
             android:layout_toEndOf="@id/string_foundat" android:inputType="textShortMessage"/>
+
     <Button
-            android:text="Locate"
+            android:id="@+id/button_add_place"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true" app:srcCompat="@android:drawable/ic_menu_add"
-            android:id="@+id/button_add_place"
-            android:layout_below="@id/item_reward" android:layout_toEndOf="@id/item_place"
-            android:onClick="addOnClick"/>
+            android:layout_below="@id/item_reward"
+            android:layout_toEndOf="@id/item_place"
+            android:clickable="true"
+            android:onClick="addOnClick"
+            android:text="ADD"
+            app:srcCompat="@android:drawable/ic_menu_add" />
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/string_added_place"

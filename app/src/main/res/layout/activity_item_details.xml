@@ -28,10 +28,17 @@
             android:layout_height="wrap_content" android:id="@+id/item_reg_user"
             android:layout_below="@id/item_reg_date" android:layout_toRightOf="@id/icon_Profile"
             android:layout_alignBottom="@id/icon_Profile"/>
+
     <TextView
-            android:text="@string/reward"
+            android:id="@+id/string_reward"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/string_reward" android:layout_below="@id/item_Img"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_Img"
+            android:layout_alignEnd="@id/string_foundat"
+            android:layout_alignBottom="@id/item_reward"
+            android:layout_alignParentStart="true"
+            android:gravity="center_vertical"
+            android:text="@string/reward" />
     <CheckBox
             android:text="Included"
             android:layout_width="wrap_content"
@@ -41,27 +48,39 @@
             android:text="@string/foundAt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/string_foundat" android:layout_below="@id/item_reward"/>
+
     <TextView
-            android:text="Ueno"
+            android:id="@+id/item_places"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/item_place"
-            android:layout_toRightOf="@id/string_foundat" android:layout_below="@id/item_reward"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_reward"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@id/string_foundat"
+            android:text="Ueno" />
+
     <TextView
-            android:text="izakaya"
+            android:id="@+id/string_comment"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/item_place2" android:layout_below="@id/item_place"
-            android:layout_toRightOf="@id/string_foundat"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/string_foundat"
+            android:layout_alignEnd="@id/string_foundat"
+            android:layout_alignParentStart="true"
+            android:text="@string/comment" />
+
     <TextView
-            android:text="park"
+            android:id="@+id/item_comment"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/item_place3"
-            android:layout_toRightOf="@id/string_foundat" android:layout_below="@id/item_place2"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_places"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@id/string_comment"
+            android:text="This is" />
 
     <Button
             android:id="@+id/button_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/item_place3"
+            android:layout_below="@id/item_comment"
             android:text="Message" />
 
     <Button
