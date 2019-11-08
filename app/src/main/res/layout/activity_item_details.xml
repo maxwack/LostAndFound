@@ -39,11 +39,16 @@
             android:layout_alignParentStart="true"
             android:gravity="center_vertical"
             android:text="@string/reward" />
+
     <CheckBox
-            android:text="Included"
+            android:id="@+id/item_reward"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/item_reward" android:layout_below="@id/item_Img"
-            android:layout_toRightOf="@id/string_reward" android:checked="true"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_Img"
+            android:layout_toRightOf="@id/string_reward"
+            android:checked="true"
+            android:enabled="false"
+            android:text="Included" />
     <TextView
             android:text="@string/foundAt"
             android:layout_width="wrap_content"
@@ -81,6 +86,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/item_comment"
+            android:onClick="messageOnClick"
             android:text="Message" />
 
     <Button

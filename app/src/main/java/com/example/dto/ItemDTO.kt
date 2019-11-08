@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import java.io.Serializable
 
 data class ItemDTO(val user : String,
+                   val displayName : String = "",
                    val name : String,
                    val place : String = "",
                    val comment : String = "",

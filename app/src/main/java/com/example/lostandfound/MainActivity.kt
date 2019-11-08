@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.content.DialogInterface
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -14,11 +15,9 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.UserProfileChangeRequest
-import android.text.InputType
-import android.util.Log
-import android.widget.EditText
 import androidx.core.content.res.ResourcesCompat
+import com.example.service.UserSingleton
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class MainActivity : AppCompatActivity(){
@@ -45,6 +44,11 @@ class MainActivity : AppCompatActivity(){
     private val choice = arrayOf("I found something !", "I lost something !")
     private val choiceUser = arrayOf("Log In", "Register")
     private lateinit var toolbar: ActionBar
+    private lateinit var bottombar : BottomNavigationView
+
+    private val fireStoreUsers by lazy {
+        FirebaseFirestore.getInstance().collection("users")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,19 +65,28 @@ class MainActivity : AppCompatActivity(){
         transaction.commit()
 
         toolbar = supportActionBar!!
+
+        bottombar = findViewById(R.id.bottom_navigation)
+
         if(auth.currentUser != null){
             toolbar.title = auth.currentUser!!.displayName
+            fireStoreUsers.whereEqualTo("mail", auth.currentUser!!.email).limit(1)
+            .get()
+                .addOnSuccessListener {
+                    UserSingleton.getInstance(this).createSingleton(it.documents[0].id, auth.currentUser!!.displayName!!)
+                }
+                .addOnFailureListener {  e ->
+                    Log.w("TAG", "Error adding document", e)
+                }
+            bottombar.menu.getItem(2).isEnabled = true
         }else{
             toolbar.title = "Anonymous"
+            bottombar.menu.getItem(2).isEnabled = false
         }
 
 
         toolbar.setHomeAsUpIndicator(ResourcesCompat.getDrawable(resources,android.R.drawable.ic_menu_revert,null))
-
-        val bottomNavigation: BottomNavigationView = findViewById(R.id.bottom_navigation)
-        bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-
-
+        bottombar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -114,6 +127,7 @@ class MainActivity : AppCompatActivity(){
                             startActivityForResult(
                                 AuthUI.getInstance()
                                     .createSignInIntentBuilder()
+                                    .setIsSmartLockEnabled(false)
                                     .setAvailableProviders(providers)
                                     .build(),
                                 RC_SIGN_IN)
@@ -145,7 +159,12 @@ class MainActivity : AppCompatActivity(){
                 return@OnNavigationItemSelectedListener true
             }
             R.id.menu_message -> {
-
+                toolbar.setDisplayHomeAsUpEnabled(true)
+                val transaction = supportFragmentManager.beginTransaction()
+//                        val frg = supportFragmentManager.findFragmentByTag("item_list")
+                val messageFrag = ChatListFragment()
+                transaction.replace(R.id.frag_holder, messageFrag, "chat_list")
+                transaction.commit()
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -162,6 +181,16 @@ class MainActivity : AppCompatActivity(){
                 // Successfully signed in
                 if(auth.currentUser != null){
                     toolbar.title = auth.currentUser!!.displayName
+                    val newUser = mapOf(
+                        "displayName" to auth.currentUser!!.displayName,
+                        "mail" to auth.currentUser!!.email)
+                    fireStoreUsers.add(newUser)
+                        .addOnSuccessListener {
+                            UserSingleton.getInstance(this).createSingleton(it.id, auth.currentUser!!.displayName!!)
+                        }
+                        .addOnFailureListener { e -> Log.e("ERROR", e.message) }
+
+                    bottombar.menu.getItem(2).isEnabled = true
                 }else{
                     toolbar.title = "Anonymous"
                 }
@@ -175,6 +204,16 @@ class MainActivity : AppCompatActivity(){
         }else if(requestCode == RC_LOG_IN){
             if(auth.currentUser != null){
                 toolbar.title = auth.currentUser!!.displayName
+                fireStoreUsers.whereEqualTo("mail", auth.currentUser!!.email).limit(1)
+                    .get()
+                    .addOnSuccessListener {
+                        UserSingleton.getInstance(this).createSingleton(it.documents[0].id, auth.currentUser!!.displayName!!)
+                    }
+                    .addOnFailureListener {  e ->
+                        Log.w("TAG", "Error adding document", e)
+                    }
+
+                bottombar.menu.getItem(2).isEnabled = true
             }else{
                 toolbar.title = "Anonymous"
             }
@@ -189,39 +228,42 @@ class MainActivity : AppCompatActivity(){
                 .addOnCompleteListener {
                     Toast.makeText(baseContext, "user logout",
                         Toast.LENGTH_SHORT).show()
-                    if(auth.currentUser != null){
-                        toolbar.title = auth.currentUser!!.displayName
-                    }else{
                         toolbar.title = "Anonymous"
-                    }
                 }
+            bottombar.menu.getItem(2).isEnabled = false
             true
         }
         R.id.action_historic -> {
-            toolbar.title = "HISTORIC"
-            toolbar.setDisplayHomeAsUpEnabled(true)
-            val transaction = supportFragmentManager.beginTransaction()
-            val frg = supportFragmentManager.findFragmentByTag("item_list")
-            transaction.detach(frg!!)
-            val args = Bundle()
-            args.putString("action", HISTORIC)
-            args.putString("user", auth.currentUser!!.uid)
-            frg.arguments = args
-            transaction.attach(frg)
-            transaction.commit()
+            if(auth.currentUser != null) {
+                toolbar.title = "HISTORIC"
+                toolbar.setDisplayHomeAsUpEnabled(true)
+                val transaction = supportFragmentManager.beginTransaction()
+                val frg = ItemListFragment()
+                val args = Bundle()
+                args.putString("action", HISTORIC)
+                frg.arguments = args
+                transaction.replace(R.id.frag_holder, frg, "historic_list")
+                transaction.commit()
+            }
             true
         }
         android.R.id.home ->{
             toolbar.title = auth.currentUser!!.displayName
-            toolbar.setDisplayHomeAsUpEnabled(false)
-            val transaction = supportFragmentManager.beginTransaction()
-            val frg = supportFragmentManager.findFragmentByTag("item_list")
-            transaction.detach(frg!!)
-            val args = Bundle()
-            args.putString("action", SHOW_ALL)
-            frg.arguments = args
-            transaction.attach(frg)
-            transaction.commit()
+            if(supportFragmentManager.findFragmentByTag("chat") != null){
+                val transaction = supportFragmentManager.beginTransaction()
+                val frg = ChatListFragment()
+                transaction.replace(R.id.frag_holder, frg, "chat_list")
+                transaction.commit()
+            }else{
+                toolbar.setDisplayHomeAsUpEnabled(false)
+                val transaction = supportFragmentManager.beginTransaction()
+                val frg = ItemListFragment()
+                val args = Bundle()
+                args.putString("action", SHOW_ALL)
+                frg.arguments = args
+                transaction.replace(R.id.frag_holder, frg, "item_list")
+                transaction.commit()
+            }
             true
         }
         else -> {

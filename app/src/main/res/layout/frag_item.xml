@@ -10,6 +10,17 @@
             android:layout_weight="1">
 
         <ImageView
+                android:id="@+id/img_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/item_reg_date"
+                android:layout_alignBottom="@id/img_item"
+                android:layout_alignParentEnd="true"
+                android:layout_toEndOf="@id/itemName"
+                android:contentDescription="state of the item"
+                app:srcCompat="@drawable/question_mark" />
+
+        <ImageView
                 android:id="@+id/img_item"
                 android:layout_width="94dp"
                 android:layout_height="80dp"
@@ -22,6 +33,7 @@
                 android:id="@+id/itemName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/item_reg_date"
                 android:layout_toEndOf="@id/img_item"
                 android:text="Wallet" />
 
@@ -30,7 +42,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_toEndOf="@id/itemName"
                 android:text="2019/08/14"
                 android:textAlignment="textEnd" />
 
@@ -47,6 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/itemName"
+                android:layout_toStartOf="@id/item_reg_date"
                 android:layout_toEndOf="@id/string_at"
                 android:text="TextView" />
 
@@ -55,6 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/string_at"
+                android:layout_toStartOf="@id/item_reg_date"
                 android:layout_toEndOf="@id/img_item"
                 android:text="@string/shortDesc" />
 

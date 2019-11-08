@@ -1,5 +1,6 @@
 package com.example.lostandfound
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.dto.ItemDTO
+import com.example.service.UserSingleton
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -17,7 +19,6 @@ class ItemListFragment : Fragment()  {
     private lateinit var db : FirebaseFirestore
     private lateinit var mFStorageRef: StorageReference
     private var action = ""
-    private var user = ""
     private val map : HashMap<String, ItemDTO> = HashMap()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -27,11 +28,8 @@ class ItemListFragment : Fragment()  {
 
         db = FirebaseFirestore.getInstance()
         mFStorageRef = FirebaseStorage.getInstance().reference
-        action = arguments!!.getString("action")
+        action = arguments!!.getString("action")!!
 
-        if(arguments!!.containsKey("user")){
-            user = arguments!!.getString("user")
-        }
         return view
     }
 
@@ -59,26 +57,28 @@ class ItemListFragment : Fragment()  {
 
                         val transaction = fragmentManager!!.beginTransaction()
                         transaction.detach(frag!!)
-                        transaction.attach(frag!!)
+                        transaction.attach(frag)
                         transaction.commit()
                         continue
                     }
 
-                    mFStorageRef!!.child("images/${document.id}").getBytes(Long.MAX_VALUE).addOnSuccessListener {
+                    mFStorageRef.child("images/${document.id}").getBytes(Long.MAX_VALUE).addOnSuccessListener {
                         // Use the bytes to display the image
                         val item = ItemFragment()
 
                         val date = document.getDate("date")
                         val format = SimpleDateFormat("dd/MM/yyy")
                         val strDate = format.format(date)
+                        var displayName = if(document.getString("userName") != null) document.getString("userName") else ""
 
                         val itemDto = ItemDTO(document.getString("userId")!!,
-                            document.getString("item_name")!!,
-                            document.getString("item_places")!!,
+                            displayName!!,
+                            document.getString("name")!!,
+                            document.getString("places")!!,
                             document.getString("comment")!!,
-                            false,
+                            document.getBoolean("reward")!!,
                             strDate,
-                            document.getString("item_category")!!,
+                            document.getString("category")!!,
                             document.getString("state")!!,
                             it)
 
@@ -97,13 +97,16 @@ class ItemListFragment : Fragment()  {
                         val format = SimpleDateFormat("dd/MM/yyy")
                         val strDate = format.format(date)
 
+                        var displayName = if(document.getString("userName") != null) document.getString("userName") else ""
+
                         val itemDto = ItemDTO(document.getString("userId")!!,
-                            document.getString("item_name")!!,
-                            document.getString("item_places")!!,
+                            displayName!!,
+                            document.getString("name")!!,
+                            document.getString("places")!!,
                             document.getString("comment")!!,
-                            false,
+                            document.getBoolean("reward")!!,
                             strDate,
-                            document.getString("item_category")!!,
+                            document.getString("category")!!,
                             document.getString("state")!!,
                             null)
 
@@ -123,7 +126,7 @@ class ItemListFragment : Fragment()  {
     private fun refreshUIUser(){
 
         val items = db.collection("items")
-        items.whereEqualTo("userId", user).orderBy("date").limit(10)
+        items.whereEqualTo("userId", UserSingleton.getInstance(activity!!.applicationContext).getId()).orderBy("date").limit(10)
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
@@ -132,26 +135,28 @@ class ItemListFragment : Fragment()  {
 
                         val transaction = fragmentManager!!.beginTransaction()
                         transaction.detach(frag!!)
-                        transaction.attach(frag!!)
+                        transaction.attach(frag)
                         transaction.commit()
                         continue
                     }
 
-                    mFStorageRef!!.child("images/${document.id}").getBytes(Long.MAX_VALUE).addOnSuccessListener {
+                    mFStorageRef.child("images/${document.id}").getBytes(Long.MAX_VALUE).addOnSuccessListener {
                         // Use the bytes to display the image
                         val item = ItemFragment()
 
                         val date = document.getDate("date")
                         val format = SimpleDateFormat("dd/MM/yyy")
                         val strDate = format.format(date)
+                        var displayName = if(document.getString("userName") != null) document.getString("userName") else ""
 
                         val itemDto = ItemDTO(document.getString("userId")!!,
-                        document.getString("item_name")!!,
-                        document.getString("item_places")!!,
+                            displayName!!,
+                        document.getString("name")!!,
+                        document.getString("places")!!,
                         document.getString("comment")!!,
-                        false,
+                            document.getBoolean("reward")!!,
                             strDate,
-                        document.getString("item_category")!!,
+                        document.getString("category")!!,
                         document.getString("state")!!,
                         it)
 
@@ -170,14 +175,16 @@ class ItemListFragment : Fragment()  {
                         val date = document.getDate("date")
                         val format = SimpleDateFormat("dd/MM/yyy")
                         val strDate = format.format(date)
+                        var displayName = if(document.getString("userName") != null) document.getString("userName") else ""
 
                         val itemDto = ItemDTO(document.getString("userId")!!,
-                            document.getString("item_name")!!,
-                            document.getString("item_places")!!,
+                            displayName!!,
+                            document.getString("name")!!,
+                            document.getString("places")!!,
                             document.getString("comment")!!,
-                            false,
+                            document.getBoolean("reward")!!,
                             strDate,
-                            document.getString("item_category")!!,
+                            document.getString("category")!!,
                             document.getString("state")!!,
                             null)
 
@@ -197,6 +204,7 @@ class ItemListFragment : Fragment()  {
 
             }
     }
+
 
     fun getMap(): HashMap<String, ItemDTO> {
         return map

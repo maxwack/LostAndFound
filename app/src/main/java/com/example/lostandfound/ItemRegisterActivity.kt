@@ -2,7 +2,6 @@ package com.example.lostandfound
 
 import android.Manifest
 import android.app.Activity
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -19,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.example.service.UserSingleton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.time.LocalDateTime
@@ -29,7 +29,6 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageMetadata
 import com.google.firebase.storage.StorageReference
-import org.w3c.dom.Text
 import java.io.File
 import java.text.SimpleDateFormat
 
@@ -49,9 +48,7 @@ class ItemRegisterActivity: AppCompatActivity() {
     private var itemReward  :CheckBox? = null
     private var itemImg: ImageView? = null
 
-    private var mCurrentPhotoPath: String? = null;
-    @ServerTimestamp
-    var time: Date? = null
+    private var mCurrentPhotoPath: String? = null
 
     companion object{
         const val PERMISSIONS_REQUEST_EXTERNAL_STORAGE = 10
@@ -71,7 +68,7 @@ class ItemRegisterActivity: AppCompatActivity() {
         val stringDate = findViewById<TextView>(R.id.string_date)
         stringDate.text = date
 
-        action = intent.action
+        action = intent.action!!
         mFFirestore = FirebaseFirestore.getInstance()
         mFStorageRef = FirebaseStorage.getInstance().reference
 
@@ -215,47 +212,54 @@ class ItemRegisterActivity: AppCompatActivity() {
 
 
         val data = HashMap<String, Any>()
-        data["userId"] =  FirebaseAuth.getInstance().currentUser!!.uid
-        data["item_name"] =  itemName?.text.toString()
-        data["item_places"] = itemPlaces?.text.toString()
-        data["item_category"] = itemCategory?.text.toString()
+        data["userId"] = UserSingleton.getInstance(this).getId()!!
+        data["userName"] = UserSingleton.getInstance(this).getDisplayName()!!
+        data["name"] =  itemName?.text.toString()
+        data["places"] = itemPlaces?.text.toString()
+        data["category"] = itemCategory?.text.toString()
         data["comment"] = itemComment?.text.toString()
         data["date"] = FieldValue.serverTimestamp()
-        //            val item = ItemDTO("me", item_name,list_place )
+
         if (action == MainActivity.REGISTER_LOST) {
-            data["reward"] = itemReward?.isChecked.toString()
+            data["reward"] = itemReward?.isChecked!!
             data["state"] = MainActivity.REGISTER_LOST
         }else if (action == MainActivity.REGISTER_FOUND){
+            data["reward"] = false.toString()
             data["state"] = MainActivity.REGISTER_FOUND
         }
 
         mFFirestore!!.collection("items").add(data)
             .addOnSuccessListener { documentReference ->
                 Log.d("TAG", "DocumentSnapshot written with ID: ${documentReference.id}")
-                // File or Blob
-                val file = Uri.fromFile(File(mCurrentPhotoPath))
+                if(mCurrentPhotoPath != null && mCurrentPhotoPath!!.isNotEmpty()) {
+                    // File or Blob
+                    val file = Uri.fromFile(File(mCurrentPhotoPath))
 
-                // Create the file metadata
-                val metadata = StorageMetadata.Builder()
-                    .setContentType("image/jpeg")
-                    .build()
+                    // Create the file metadata
+                    val metadata = StorageMetadata.Builder()
+                        .setContentType("image/jpeg")
+                        .build()
 
-                // Upload file and metadata to the path 'images/mountains.jpg'
-                val uploadTask = mFStorageRef!!.child("images/${documentReference.id}").putFile(file, metadata)
+                    // Upload file and metadata to the path 'images/mountains.jpg'
+                    val uploadTask = mFStorageRef!!.child("images/${documentReference.id}")
+                        .putFile(file, metadata)
 
-                // Listen for state changes, errors, and completion of the upload.
-                uploadTask.addOnProgressListener { taskSnapshot ->
-                    val progress = (100.0 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount
-                    println("Upload is $progress% done")
-                }.addOnPausedListener {
-                    println("Upload is paused")
-                }.addOnFailureListener {
-                    // Handle unsuccessful uploads
-                }.addOnSuccessListener {
-                    // Handle successful uploads on complete
-                    // ...
-                    finish()
+                    // Listen for state changes, errors, and completion of the upload.
+                    uploadTask.addOnProgressListener { taskSnapshot ->
+                        val progress =
+                            (100.0 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount
+                        println("Upload is $progress% done")
+                    }.addOnPausedListener {
+                        println("Upload is paused")
+                    }.addOnFailureListener {
+                        // Handle unsuccessful uploads
+                    }.addOnSuccessListener {
+                        // Handle successful uploads on complete
+                        // ...
+                    }
                 }
+
+                finish()
             }
             .addOnFailureListener { e ->
                 Log.w("TAG", "Error adding document", e)
