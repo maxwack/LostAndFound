@@ -18,7 +18,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_toEndOf="@id/itemName"
                 android:contentDescription="state of the item"
-                app:srcCompat="@drawable/question_mark" />
+                app:srcCompat="@drawable/question_mark_old" />
 
         <ImageView
                 android:id="@+id/img_item"
@@ -35,7 +35,9 @@
                 android:layout_height="wrap_content"
                 android:layout_toStartOf="@id/item_reg_date"
                 android:layout_toEndOf="@id/img_item"
-                android:text="Wallet" />
+                android:text="Wallet"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
         <TextView
                 android:id="@+id/item_reg_date"

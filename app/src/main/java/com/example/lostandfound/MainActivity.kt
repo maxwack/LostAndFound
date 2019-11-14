@@ -17,7 +17,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import androidx.core.content.res.ResourcesCompat
 import com.example.service.UserSingleton
+import com.example.service.Util
+import com.firebase.ui.auth.AuthUI.getInstance
 import com.google.firebase.firestore.FirebaseFirestore
+
+
 
 
 class MainActivity : AppCompatActivity(){
@@ -78,10 +82,8 @@ class MainActivity : AppCompatActivity(){
                 .addOnFailureListener {  e ->
                     Log.w("TAG", "Error adding document", e)
                 }
-            bottombar.menu.getItem(2).isEnabled = true
         }else{
             toolbar.title = "Anonymous"
-            bottombar.menu.getItem(2).isEnabled = false
         }
 
 
@@ -97,61 +99,24 @@ class MainActivity : AppCompatActivity(){
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.menu_add -> {
-                if (auth.currentUser != null) {
-                    // already signed in
+                if(!Util.isLogin()){
+                    promptRegister()
+                }else {
                     val builder = AlertDialog.Builder(this)
                     builder.setTitle("What happened?")
-                    builder.setItems(choice, DialogInterface.OnClickListener {_, which ->
-                        if(which == 0) {
+                    builder.setItems(choice, DialogInterface.OnClickListener { _, which ->
+                        if (which == 0) {
                             val i = Intent(this, ItemRegisterActivity::class.java)
                             i.action = REGISTER_FOUND
                             startActivity(i)
-                        }else{
+                        } else {
                             val i = Intent(this, ItemRegisterActivity::class.java)
                             i.action = REGISTER_LOST
                             startActivity(i)
                         }
                     })
                     builder.show()
-                } else {
-                    // not signed in
-                    // Create and launch sign-in intent
-
-                    val builder = AlertDialog.Builder(this)
-                    builder.setTitle("Only logged users can register a new Item.")
-                    builder.setItems(choiceUser) { _, which ->
-                        if(which == 0) {
-                            val intent = Intent(this,LoginActivity::class.java)
-                            startActivityForResult(intent, RC_LOG_IN)
-                        }else{
-                            startActivityForResult(
-                                AuthUI.getInstance()
-                                    .createSignInIntentBuilder()
-                                    .setIsSmartLockEnabled(false)
-                                    .setAvailableProviders(providers)
-                                    .build(),
-                                RC_SIGN_IN)
-                        }
-                    }
-                    builder.show()
-
-//                    firebase.auth.createUserWithEmailAndPassword(email, password)
-//                        .then(function(result) {
-//                            return result.user.updateProfile({
-//                                displayName: document.getElementById("name").value
-//                            })
-//                        }).catch(function(error) {
-//                            console.log(error);
-//                        });`
-//                    val intent = Intent(this, LoginActivity::class.java)
-//                    startActivityForResult(
-//                        intent,
-//                        RC_SIGN_IN)
                 }
-
-
-
-
                 return@OnNavigationItemSelectedListener true
             }
             R.id.menu_search -> {
@@ -159,12 +124,16 @@ class MainActivity : AppCompatActivity(){
                 return@OnNavigationItemSelectedListener true
             }
             R.id.menu_message -> {
-                toolbar.setDisplayHomeAsUpEnabled(true)
-                val transaction = supportFragmentManager.beginTransaction()
+                if(!Util.isLogin()){
+                    promptRegister()
+                }else {
+                    toolbar.setDisplayHomeAsUpEnabled(true)
+                    val transaction = supportFragmentManager.beginTransaction()
 //                        val frg = supportFragmentManager.findFragmentByTag("item_list")
-                val messageFrag = ChatListFragment()
-                transaction.replace(R.id.frag_holder, messageFrag, "chat_list")
-                transaction.commit()
+                    val messageFrag = ChatListFragment()
+                    transaction.replace(R.id.frag_holder, messageFrag, "chat_list")
+                    transaction.commit()
+                }
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -190,7 +159,7 @@ class MainActivity : AppCompatActivity(){
                         }
                         .addOnFailureListener { e -> Log.e("ERROR", e.message) }
 
-                    bottombar.menu.getItem(2).isEnabled = true
+
                 }else{
                     toolbar.title = "Anonymous"
                 }
@@ -213,7 +182,6 @@ class MainActivity : AppCompatActivity(){
                         Log.w("TAG", "Error adding document", e)
                     }
 
-                bottombar.menu.getItem(2).isEnabled = true
             }else{
                 toolbar.title = "Anonymous"
             }
@@ -223,18 +191,25 @@ class MainActivity : AppCompatActivity(){
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_logout -> {
             // User chose the "Settings" item, show the app settings UI...
-            AuthUI.getInstance()
-                .signOut(this)
-                .addOnCompleteListener {
-                    Toast.makeText(baseContext, "user logout",
-                        Toast.LENGTH_SHORT).show()
+            if(!Util.isLogin()){
+                promptRegister()
+            }else {
+                getInstance()
+                    .signOut(this)
+                    .addOnCompleteListener {
+                        Toast.makeText(
+                            baseContext, "user logout",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         toolbar.title = "Anonymous"
-                }
-            bottombar.menu.getItem(2).isEnabled = false
+                    }
+            }
             true
         }
         R.id.action_historic -> {
-            if(auth.currentUser != null) {
+            if(!Util.isLogin()){
+                promptRegister()
+            }else {
                 toolbar.title = "HISTORIC"
                 toolbar.setDisplayHomeAsUpEnabled(true)
                 val transaction = supportFragmentManager.beginTransaction()
@@ -271,5 +246,26 @@ class MainActivity : AppCompatActivity(){
             // Invoke the superclass to handle it.
             super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun promptRegister(){
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Only logged users can register a new Item.")
+        builder.setItems(choiceUser) { _, which ->
+            if(which == 0) {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivityForResult(intent, RC_LOG_IN)
+            }else{
+                startActivityForResult(
+                    getInstance()
+                        .createSignInIntentBuilder()
+                        .setIsSmartLockEnabled(false)
+                        .setAvailableProviders(providers)
+                        .build(),
+                    RC_SIGN_IN
+                )
+            }
+        }
+        builder.show()
     }
 }

@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-            android:id="@+id/menu_add"
-            android:icon="@android:drawable/ic_menu_add"
-            android:title="Add" />
 
     <item
             android:id="@+id/menu_search"
-            android:icon="@android:drawable/ic_menu_search"
-            android:title="Search"/>
+            android:icon="@android:drawable/ic_search_category_default"
+            android:title="Search" />
+
+    <item
+            android:id="@+id/menu_add"
+            android:icon="@drawable/ic_add_24dp"
+            android:title="Add" />
 
     <item
             android:id="@+id/menu_message"
             android:icon="@android:drawable/ic_dialog_email"
-            android:title="Message"/>
+            android:title="Message" />
 
 </menu>

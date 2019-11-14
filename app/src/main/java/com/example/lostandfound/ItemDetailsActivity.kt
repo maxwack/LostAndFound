@@ -1,5 +1,6 @@
 package com.example.lostandfound
 
+
 import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -11,13 +12,13 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.dto.ItemDTO
 import com.example.service.UserSingleton
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ServerTimestamp
-import java.util.*
 
 class ItemDetailsActivity: AppCompatActivity() {
 
@@ -33,20 +34,25 @@ class ItemDetailsActivity: AppCompatActivity() {
         windowManager.defaultDisplay.getMetrics(dm)
 
         val mMaxWidth = (dm.widthPixels * 0.8).toInt()
-        val mMaxHeight = (dm.heightPixels * 0.8).toInt()
+        val mMaxHeight = (dm.heightPixels * 0.5).toInt()
 
         val styledAttributes = theme.obtainStyledAttributes(
             intArrayOf(android.R.attr.actionBarSize)
         )
         styledAttributes.recycle()
-        supportActionBar!!.title = intent.action  // provide compatibility to all the versions
+        supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+        supportActionBar!!.setCustomView(R.layout.actionbar)
+
+        val titleTxt = findViewById<TextView>(R.id.action_bar_title)
+        titleTxt.text = intent.action
 
 
         db = FirebaseFirestore.getInstance()
 
-        val itName = findViewById<TextView>(R.id.item_name)
+//        val itName = findViewById<TextView>(R.id.item_name)
         val itDisplayName = findViewById<TextView>(R.id.item_reg_user)
-        val itDate = findViewById<TextView>(R.id.item_reg_date)
+        val itDate = findViewById<TextView>(R.id.item_when)
+        val itRegisterDate = findViewById<TextView>(R.id.item_reg_date)
         val itPlace = findViewById<TextView>(R.id.item_places)
         val itComment = findViewById<TextView>(R.id.item_comment)
         val itImg = findViewById<ImageView>(R.id.item_Img)
@@ -55,8 +61,9 @@ class ItemDetailsActivity: AppCompatActivity() {
 
         itemDto = intent!!.extras["itemDto"] as ItemDTO
 
-        itName.text = itemDto.name
+//        itName.text = itemDto.name
         itDate.text = itemDto.date
+        itRegisterDate.text = itemDto.registerDate
         itPlace.text = itemDto.place
         itComment.text = itemDto.comment
         itReward.isChecked =itemDto.reward
@@ -71,7 +78,15 @@ class ItemDetailsActivity: AppCompatActivity() {
             butMessage.isEnabled = false
         }else{
             currentUser =  UserSingleton.getInstance(this).getId()!!
-            butMessage.isEnabled = currentUser != itemDto.name
+            butMessage.isEnabled = currentUser != itemDto.user
+        }
+
+        if(itemDto.state == MainActivity.REGISTER_LOST){
+            val imgFound = findViewById<ImageView>(R.id.img_FoundLost)
+            imgFound.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.question_mark))
+        }else{
+            val imgFound = findViewById<ImageView>(R.id.img_FoundLost)
+            imgFound.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.exclamation_mark))
         }
 
         if(itemDto.img != null){
@@ -133,7 +148,7 @@ class ItemDetailsActivity: AppCompatActivity() {
     }
 
 
-    fun cancelOnClick(v: View){
+    fun closeOnClick(v: View){
         finish()
     }
 }

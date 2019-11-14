@@ -17,12 +17,12 @@
     <string name="action_logout">Logout</string>
 
     <string name="image_desc">Image of the lost item</string>
-    <string name="at">at: </string>
+    <string name="at">At: </string>
     <string name="shortDesc">short description: </string>
-    <string name="foundAt">found near: </string>
-    <string name="lostAt">lost near: </string>
-    <string name="reward">reward: </string>
-    <string name="comment">comment: </string>
-    <string name="category">category: </string>
+    <string name="foundAt">Found near: </string>
+    <string name="lostAt">Lost near: </string>
+    <string name="reward">Reward: </string>
+    <string name="comment">Comment: </string>
+    <string name="category">Category: </string>
     <string name="select">select</string>
 </resources>

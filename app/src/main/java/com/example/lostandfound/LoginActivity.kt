@@ -28,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
         windowManager.defaultDisplay.getMetrics(dm)
 
         val mMaxWidth = (dm.widthPixels * 0.8).toInt()
-        val mMaxHeight = (dm.heightPixels * 0.8).toInt()
+        val mMaxHeight = (dm.heightPixels * 0.4).toInt()
 
         val styledAttributes = theme.obtainStyledAttributes(
             intArrayOf(android.R.attr.actionBarSize)

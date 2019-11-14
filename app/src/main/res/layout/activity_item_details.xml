@@ -1,66 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:background="@drawable/detail_bg">
 
     <ImageView
+            android:id="@+id/item_Img"
             android:layout_width="100dp"
-            android:layout_height="100dp" app:srcCompat="@drawable/unknown" android:id="@+id/item_Img"
-            android:contentDescription="@string/image_desc"/>
+            android:layout_height="100dp"
+            android:contentDescription="@string/image_desc"
+            app:srcCompat="@drawable/unknown" />
+
+    <!--    <TextView-->
+    <!--            android:id="@+id/item_name"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_alignParentEnd="true"-->
+    <!--            android:layout_toRightOf="@id/item_Img"-->
+    <!--            android:gravity="center_vertical"-->
+    <!--            android:text="The leather wallet"-->
+    <!--            android:textSize="24sp"-->
+    <!--            android:textStyle="bold" />-->
+
     <TextView
-            android:text="The leather wallet"
+            android:id="@+id/item_reg_date"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/item_name" android:layout_toRightOf="@id/item_Img"/>
-    <TextView
-            android:text="2019/08/14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/item_reg_date" android:layout_below="@id/item_name"
-            android:layout_toRightOf="@id/item_Img"/>
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/item_Img"
+            android:text="2019/08/14" />
+    <!--            android:layout_below="@id/item_name"-->
+
     <ImageView
+            android:id="@+id/icon_Profile"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" app:srcCompat="@android:drawable/ic_menu_myplaces"
-            android:id="@+id/icon_Profile" android:layout_below="@id/item_reg_date"
-            android:layout_toRightOf="@id/item_Img"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_reg_date"
+            android:layout_toRightOf="@id/item_Img"
+            app:srcCompat="@drawable/ic_profile_24dp" />
+
     <TextView
-            android:text="Sophie"
+            android:id="@+id/item_reg_user"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/item_reg_user"
-            android:layout_below="@id/item_reg_date" android:layout_toRightOf="@id/icon_Profile"
-            android:layout_alignBottom="@id/icon_Profile"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_reg_date"
+            android:layout_alignBottom="@id/icon_Profile"
+            android:layout_alignParentEnd="false"
+            android:layout_toRightOf="@id/icon_Profile"
+            android:gravity="center_vertical"
+            android:text="Sophie" />
+
+    <ImageView
+            android:id="@+id/img_FoundLost"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/item_Img"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="-1dp"
+            app:srcCompat="@drawable/exclamation_mark_old" />
+
+    <TextView
+            android:id="@+id/string_when"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_Img"
+            android:layout_marginLeft="10dp"
+            android:text="when :"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    <TextView
+            android:id="@+id/item_when"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_Img"
+            android:layout_alignStart="@id/item_places"
+            android:layout_alignBottom="@id/string_when"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@id/string_when"
+            android:text="20/01/1980" />
 
     <TextView
             android:id="@+id/string_reward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/item_Img"
+            android:layout_below="@id/string_when"
             android:layout_alignEnd="@id/string_foundat"
             android:layout_alignBottom="@id/item_reward"
             android:layout_alignParentStart="true"
+            android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
-            android:text="@string/reward" />
+            android:text="@string/reward"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
     <CheckBox
             android:id="@+id/item_reward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/item_Img"
+            android:layout_below="@id/item_when"
+            android:layout_alignParentEnd="true"
             android:layout_toRightOf="@id/string_reward"
             android:checked="true"
             android:enabled="false"
             android:text="Included" />
+
     <TextView
-            android:text="@string/foundAt"
+            android:id="@+id/string_foundat"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/string_foundat" android:layout_below="@id/item_reward"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_reward"
+            android:layout_marginLeft="10dp"
+            android:text="@string/foundAt"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
     <TextView
             android:id="@+id/item_places"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/item_reward"
+            android:layout_alignBottom="@id/string_foundat"
+            android:layout_alignParentEnd="true"
             android:layout_marginLeft="5dp"
             android:layout_toEndOf="@id/string_foundat"
+            android:gravity="center_vertical"
             android:text="Ueno" />
 
     <TextView
@@ -70,30 +136,36 @@
             android:layout_below="@id/string_foundat"
             android:layout_alignEnd="@id/string_foundat"
             android:layout_alignParentStart="true"
-            android:text="@string/comment" />
+            android:layout_marginLeft="10dp"
+            android:text="@string/comment"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
     <TextView
             android:id="@+id/item_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/item_places"
+            android:layout_alignBottom="@id/string_comment"
+            android:layout_alignParentEnd="true"
             android:layout_marginLeft="5dp"
             android:layout_toEndOf="@id/string_comment"
+            android:gravity="center_vertical"
             android:text="This is" />
 
     <Button
             android:id="@+id/button_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/item_comment"
+            android:layout_below="@id/string_comment"
             android:onClick="messageOnClick"
             android:text="Message" />
 
-    <Button
-            android:id="@+id/button_cancel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/button_message"
-            android:onClick="cancelOnClick"
-            android:text="@string/fui_cancel" />
+    <!--    <Button-->
+    <!--            android:id="@+id/button_cancel"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_below="@id/button_message"-->
+    <!--            android:onClick="cancelOnClick"-->
+    <!--            android:text="@string/fui_cancel" />-->
 </RelativeLayout>

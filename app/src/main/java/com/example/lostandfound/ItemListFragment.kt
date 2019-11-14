@@ -69,6 +69,9 @@ class ItemListFragment : Fragment()  {
                         val date = document.getDate("date")
                         val format = SimpleDateFormat("dd/MM/yyy")
                         val strDate = format.format(date)
+
+                        val registerDate = document.getDate("registerDate")
+                        val strRegisterDate = format.format(registerDate)
                         var displayName = if(document.getString("userName") != null) document.getString("userName") else ""
 
                         val itemDto = ItemDTO(document.getString("userId")!!,
@@ -77,6 +80,7 @@ class ItemListFragment : Fragment()  {
                             document.getString("places")!!,
                             document.getString("comment")!!,
                             document.getBoolean("reward")!!,
+                            strRegisterDate,
                             strDate,
                             document.getString("category")!!,
                             document.getString("state")!!,
@@ -96,6 +100,8 @@ class ItemListFragment : Fragment()  {
                         val date = document.getDate("date")
                         val format = SimpleDateFormat("dd/MM/yyy")
                         val strDate = format.format(date)
+                        val registerDate = document.getDate("registerDate")
+                        val strRegisterDate = format.format(registerDate)
 
                         var displayName = if(document.getString("userName") != null) document.getString("userName") else ""
 
@@ -105,6 +111,7 @@ class ItemListFragment : Fragment()  {
                             document.getString("places")!!,
                             document.getString("comment")!!,
                             document.getBoolean("reward")!!,
+                            strRegisterDate,
                             strDate,
                             document.getString("category")!!,
                             document.getString("state")!!,
@@ -147,6 +154,8 @@ class ItemListFragment : Fragment()  {
                         val date = document.getDate("date")
                         val format = SimpleDateFormat("dd/MM/yyy")
                         val strDate = format.format(date)
+                        val registerDate = document.getDate("registerDate")
+                        val strRegisterDate = format.format(registerDate)
                         var displayName = if(document.getString("userName") != null) document.getString("userName") else ""
 
                         val itemDto = ItemDTO(document.getString("userId")!!,
@@ -155,6 +164,7 @@ class ItemListFragment : Fragment()  {
                         document.getString("places")!!,
                         document.getString("comment")!!,
                             document.getBoolean("reward")!!,
+                            strRegisterDate,
                             strDate,
                         document.getString("category")!!,
                         document.getString("state")!!,
@@ -175,6 +185,8 @@ class ItemListFragment : Fragment()  {
                         val date = document.getDate("date")
                         val format = SimpleDateFormat("dd/MM/yyy")
                         val strDate = format.format(date)
+                        val registerDate = document.getDate("registerDate")
+                        val strRegisterDate = format.format(registerDate)
                         var displayName = if(document.getString("userName") != null) document.getString("userName") else ""
 
                         val itemDto = ItemDTO(document.getString("userId")!!,
@@ -183,6 +195,7 @@ class ItemListFragment : Fragment()  {
                             document.getString("places")!!,
                             document.getString("comment")!!,
                             document.getBoolean("reward")!!,
+                            strRegisterDate,
                             strDate,
                             document.getString("category")!!,
                             document.getString("state")!!,

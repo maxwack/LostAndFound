@@ -14,6 +14,7 @@ import com.example.dto.MessageDTO
 import com.firebase.ui.firestore.FirestoreRecyclerOptions.Builder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.service.UserSingleton
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
@@ -61,6 +62,9 @@ class ChatFragment : Fragment() {
         senderID = UserSingleton.getInstance(activity!!.applicationContext).getId()!!
         chatID = this.arguments!!.getString("chatID")!!
         targetName = this.arguments!!.getString("targetName")
+
+
+        (activity as AppCompatActivity).supportActionBar!!.title = targetName
 
         editMessage = view.findViewById(R.id.input)
 

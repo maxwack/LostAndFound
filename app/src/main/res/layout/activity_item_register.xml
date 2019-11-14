@@ -12,10 +12,20 @@
             android:onClick="imageOnClick"
             app:srcCompat="@drawable/unknown" />
 
+    <ImageView
+            android:id="@+id/img_FoundLost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/item_Img"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@id/item_Name"
+            app:srcCompat="@drawable/exclamation_mark_old" />
+
     <EditText
             android:id="@+id/item_Name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:layout_toEndOf="@id/item_Img"
             android:ems="10"
             android:inputType="textPersonName"
@@ -26,13 +36,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/item_Name"
+            android:layout_marginLeft="5dp"
             android:layout_toEndOf="@id/item_Img"
             android:text="2019/08/14" />
+
     <ImageView
+            android:id="@+id/icon_Profile"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" app:srcCompat="@android:drawable/ic_menu_myplaces"
-            android:id="@+id/icon_Profile" android:layout_below="@id/string_date"
-            android:layout_toEndOf="@id/item_Img" android:contentDescription="icon for user"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/string_date"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@id/item_Img"
+            android:contentDescription="icon for user"
+            app:srcCompat="@drawable/ic_profile_24dp" />
 
     <TextView
             android:id="@+id/item_reg_user"
@@ -41,33 +57,69 @@
             android:layout_below="@id/string_date"
             android:layout_alignBottom="@id/icon_Profile"
             android:layout_toEndOf="@id/icon_Profile"
+            android:gravity="center_vertical"
             android:text="Anonymous" />
 
     <TextView
-            android:text="@string/reward"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/string_reward" android:layout_below="@id/item_Img"
-            android:layout_alignBottom="@id/item_reward" android:gravity="center"/>
-    <CheckBox
-            android:text="Included"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/item_reward" android:layout_below="@id/item_Img"
-            android:checked="true"
-            android:layout_toEndOf="@id/string_reward"/>
-
-    <TextView
-            android:text="@string/lostAt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/string_foundat"
-            android:layout_below="@id/item_reward" android:layout_alignBottom="@id/item_place"
-            android:gravity="center"/>
-    <EditText
+            android:id="@+id/string_when"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/item_Img"
+            android:layout_alignEnd="@id/string_comment"
+            android:layout_alignBottom="@id/item_when"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="5dp"
+            android:gravity="center_vertical"
+            android:text="When :"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    <TextView
+            android:id="@+id/string_reward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_when"
+            android:layout_alignEnd="@id/string_comment"
+            android:layout_alignBottom="@id/item_reward"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="5dp"
+            android:gravity="center_vertical"
+            android:text="@string/reward"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    <CheckBox
+            android:id="@+id/item_reward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_when"
+            android:layout_alignStart="@id/item_comment"
+            android:layout_toEndOf="@id/string_reward"
+            android:checked="true"
+            android:text="Included" />
+
+    <TextView
+            android:id="@+id/string_foundat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_reward"
+            android:layout_alignBottom="@id/item_place"
+            android:layout_marginLeft="5dp"
+            android:gravity="center_vertical"
+            android:text="@string/lostAt"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    <EditText
+            android:id="@+id/item_place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_reward"
+            android:layout_alignStart="@id/item_comment"
+            android:layout_toEndOf="@id/string_foundat"
             android:ems="10"
-            android:id="@+id/item_place" android:layout_below="@id/item_reward"
-            android:singleLine="true"
-            android:layout_toEndOf="@id/string_foundat" android:inputType="textShortMessage"/>
+            android:inputType="textShortMessage"
+            android:singleLine="true" />
 
     <Button
             android:id="@+id/button_add_place"
@@ -79,23 +131,39 @@
             android:onClick="addOnClick"
             android:text="ADD"
             app:srcCompat="@android:drawable/ic_menu_add" />
+
     <TextView
+            android:id="@+id/string_added_place"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/string_added_place"
-            android:layout_below="@id/item_place" android:layout_toEndOf="@id/string_foundat"
-            android:layout_alignEnd="@id/item_place"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_place"
+            android:layout_alignStart="@id/item_comment"
+            android:layout_alignEnd="@id/item_place"
+            android:layout_toEndOf="@id/string_foundat" />
+
     <TextView
+            android:id="@+id/string_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/string_added_place"
+            android:layout_alignBottom="@id/button_select"
+            android:layout_marginLeft="5dp"
+            android:gravity="center_vertical"
             android:text="@string/category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/string_category"
-            android:layout_below="@id/string_added_place" android:layout_alignBottom="@id/button_select"
-            android:gravity="center"/>
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
     <TextView
-            android:text="@string/comment"
+            android:id="@+id/string_comment"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/string_comment"
-            android:layout_below="@id/string_category" android:layout_alignBottom="@id/item_comment"
-            android:gravity="center"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/string_category"
+            android:layout_alignBottom="@id/item_comment"
+            android:layout_marginLeft="5dp"
+            android:gravity="center_vertical"
+            android:text="@string/comment"
+            android:textSize="16sp"
+            android:textStyle="bold" />
     <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -104,17 +172,24 @@
             android:ems="10"
             android:id="@+id/item_comment" android:layout_below="@id/string_category"
             android:layout_toEndOf="@id/string_comment" android:layout_alignParentEnd="true"/>
+
     <Button
-            android:text="Register"
+            android:id="@+id/button_register"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/button_register"
-            android:layout_below="@id/item_comment"
-            android:layout_alignParentEnd="true" android:onClick="registerOnClick"/>
+            android:layout_height="wrap_content"
+            android:layout_above="@id/button_cancel"
+            android:layout_alignParentEnd="true"
+            android:onClick="registerOnClick"
+            android:text="Register" />
+
     <Button
-            android:text="@string/select"
+            android:id="@+id/button_select"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/button_select"
-            android:layout_below="@id/string_added_place" android:layout_toEndOf="@id/string_category"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/string_added_place"
+            android:layout_alignStart="@id/item_comment"
+            android:layout_toEndOf="@id/string_category"
+            android:text="@string/select" />
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/string_added_cat"
@@ -126,8 +201,19 @@
             android:id="@+id/button_cancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/button_register"
-            android:layout_alignParentEnd="false"
+            android:layout_alignParentBottom="true"
             android:onClick="cancelOnClick"
             android:text="@android:string/cancel" />
+
+    <EditText
+            android:id="@+id/item_when"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_Img"
+            android:layout_alignStart="@id/item_comment"
+            android:layout_toEndOf="@id/string_when"
+            android:editable="false"
+            android:ems="10"
+            android:focusable="false"
+            android:inputType="date" />
 </RelativeLayout>

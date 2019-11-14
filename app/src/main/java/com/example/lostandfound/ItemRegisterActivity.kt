@@ -2,6 +2,7 @@ package com.example.lostandfound
 
 import android.Manifest
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -24,7 +25,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
-import com.google.firebase.firestore.ServerTimestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageMetadata
@@ -39,6 +39,8 @@ class ItemRegisterActivity: AppCompatActivity() {
     private var mFFirestore: FirebaseFirestore? = null
     private var mFStorageRef: StorageReference? = null
 
+    private val cal = Calendar.getInstance()
+
     var choice = arrayOf("Take a picture", "Search for Image")
 
     private var itemName :EditText? = null
@@ -47,6 +49,7 @@ class ItemRegisterActivity: AppCompatActivity() {
     private var itemComment :EditText? = null
     private var itemReward  :CheckBox? = null
     private var itemImg: ImageView? = null
+    private var itemWhen: TextView? = null
 
     private var mCurrentPhotoPath: String? = null
 
@@ -79,6 +82,7 @@ class ItemRegisterActivity: AppCompatActivity() {
         itemComment = findViewById(R.id.item_comment)
         itemReward = findViewById(R.id.item_reward)
         itemImg = findViewById(R.id.item_Img)
+        itemWhen = findViewById(R.id.item_when)
 
         val itemUser = findViewById<TextView>(R.id.item_reg_user)
         itemUser.text = FirebaseAuth.getInstance().currentUser!!.displayName
@@ -90,6 +94,8 @@ class ItemRegisterActivity: AppCompatActivity() {
             rewardString.visibility = View.INVISIBLE
             val rewardCheck = findViewById<CheckBox>(R.id.item_reward)
             rewardCheck.visibility = View.INVISIBLE
+            val imgFound = findViewById<ImageView>(R.id.img_FoundLost)
+            imgFound.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.exclamation_mark))
         }else{
             val text = findViewById<TextView>(R.id.string_foundat)
             text.text= getString(R.string.lostAt)
@@ -97,6 +103,27 @@ class ItemRegisterActivity: AppCompatActivity() {
             rewardString.visibility = View.VISIBLE
             val rewardCheck = findViewById<CheckBox>(R.id.item_reward)
             rewardCheck.visibility = View.VISIBLE
+            val imgFound = findViewById<ImageView>(R.id.img_FoundLost)
+            imgFound.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.question_mark))
+        }
+
+        val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            cal.set(Calendar.YEAR, year)
+            cal.set(Calendar.MONTH, monthOfYear)
+            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+            val myFormat = "dd/MM/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            itemWhen!!.text = sdf.format(cal.time)
+
+        }
+
+        itemWhen!!.setOnClickListener {
+
+            DatePickerDialog(this, dateSetListener,
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH)).show()
         }
 
         val buttonAddCat = findViewById<Button>(R.id.button_select)
@@ -218,7 +245,8 @@ class ItemRegisterActivity: AppCompatActivity() {
         data["places"] = itemPlaces?.text.toString()
         data["category"] = itemCategory?.text.toString()
         data["comment"] = itemComment?.text.toString()
-        data["date"] = FieldValue.serverTimestamp()
+        data["registerDate"] = FieldValue.serverTimestamp()
+        data["date"] = itemWhen?.text.toString()
 
         if (action == MainActivity.REGISTER_LOST) {
             data["reward"] = itemReward?.isChecked!!

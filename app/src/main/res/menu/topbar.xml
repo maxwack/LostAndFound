@@ -3,11 +3,15 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- Settings, should always be in the overflow -->
-    <item android:id="@+id/action_historic"
+    <item
+            android:id="@+id/action_historic"
+            android:icon="@drawable/ic_historic_24dp"
             android:title="@string/action_historic"
-            app:showAsAction="never"/>
-    <item android:id="@+id/action_logout"
+            app:showAsAction="always" />
+    <item
+            android:id="@+id/action_logout"
+            android:icon="@drawable/ic_logout_24dp"
             android:title="@string/action_logout"
-            app:showAsAction="never"/>
+            app:showAsAction="always" />
 
 </menu>
